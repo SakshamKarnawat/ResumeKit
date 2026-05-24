@@ -66,3 +66,4 @@ options:
 - Add support for more well-known / widely-used templates:
   - McDowell
 - More customization options
+- Provide proper attribution for the templates and tech used

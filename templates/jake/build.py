@@ -96,13 +96,31 @@ def build_projects(proj_list):
         bullets = "\n".join(
             rf"        \resumeItem{{{escape(b)}}}" for b in p['bullets']
         )
+
+        # build links line separately
+        links_line = ""
+        link_parts = []
+        if p.get('demo'):
+            link_parts.append(rf"\href{{{escape(p['demo'])}}}{{\underline{{Demo}}}}")
+        if p.get('repo'):
+            link_parts.append(rf"\href{{https://{escape(p['repo'])}}}{{\underline{{Repo}}}}")
+        
+        if link_parts:
+            links_line = rf"""
+            \item
+            \begin{{tabular*}}{{0.97\textwidth}}{{l@{{\extracolsep{{\fill}}}}r}}
+            \textit{{\small {" $|$ ".join(link_parts)}}} & \\
+            \end{{tabular*}}\vspace{{-4pt}}"""
+
         items += rf"""
-    \resumeProjectHeading
-      {{\textbf{{{escape(p['name'])}}} $|$ \emph{{{escape(p['stack'])}}}}}{{{escape(p['dates'])}}}
-      \resumeItemListStart
-{bullets}
-      \resumeItemListEnd
-"""
+            \resumeProjectHeading
+            {{\textbf{{{escape(p['name'])}}} $|$ \emph{{{escape(p['stack'])}}}}}{{{escape(p['dates'])}}}\vspace{{-4pt}}
+            {links_line}
+                \resumeItemListStart
+            {bullets}
+                \resumeItemListEnd
+        """
+
     return rf"""
 \section{{Projects}}
   \resumeSubHeadingListStart{items}

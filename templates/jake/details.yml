@@ -1,23 +1,24 @@
 options:
   icons: true # show fontawesome icons in links (true/false)
-  font: "charter" # charter | times | default
-  color_links: false # colored links vs underlined black
+  font: "charter" # charter | times | default (computer modern)
+  color_links: false # colored links (true) vs underlined black (false)
 
 heading:
-  name: "Jake Ryan"
-  phone: "123-456-7890"
-  email: "jake@example.com"
-  linkedin: "linkedin.com/in/jakeryan"
-  github: "github.com/jakeryan"
-  website: "jakeryan.dev" # optional, remove if not needed
-  title: "Senior Software Engineer" # optional, remove if not needed
-  summary: "5+ years building scalable backend systems and developer tools. Passionate about clean architecture and open source." # optional
+  name: "Jake Ryan" # your full name
+  phone: "123-456-7890" # with country code if international
+  email: "jake@example.com" # your email ID
+  linkedin: "linkedin.com/in/jakeryan" # no https://
+  github: "github.com/jakeryan" # no https://
+  website: "jakeryan.dev" # optional — remove line to exclude
+  title: "Senior Software Engineer" # optional — your profile title
+  summary: "5+ years building scalable backend systems and developer tools. Passionate about clean architecture and open source." # optional — 1-2 lines max
 
 education:
   - institution: "Southwestern University"
     location: "Georgetown, TX"
     degree: "Bachelor of Science in Computer Science"
     dates: "Aug. 2015 -- May 2019"
+  # add more entries by copying the block above
 
 experience:
   - title: "Senior Software Engineer"
@@ -55,10 +56,12 @@ experience:
       - "Built and delivered 4 full-stack web apps for small business clients using React and Node.js"
       - "Set up automated deployment pipelines on AWS reducing client deployment time from hours to minutes"
 
-projects:
+projects: # optional — remove this entire section to exclude from resume
   - name: "ResumeCraft"
     stack: "Python, LaTeX, YAML, watchdog"
     dates: "Jan. 2024 -- Present"
+    demo: "https://yourproject.com" # optional — live link
+    repo: "github.com/you/project" # optional — repo
     bullets:
       - "Built YAML-driven LaTeX resume generator with live watch mode and auto PDF compilation"
       - "Supports multiple templates, optional sections, FontAwesome icons, and custom fonts"
@@ -69,9 +72,11 @@ projects:
     bullets:
       - "Built internal developer dashboard aggregating metrics from GitHub, Jira, and PagerDuty"
       - "Reduced mean time to incident response by 25% across engineering org"
+  # add more entries by copying the block above
 
 skills:
   Languages: "Go, Python, TypeScript, SQL, Bash"
   Frameworks: "React, FastAPI, Node.js, Gin, gRPC"
   Developer Tools: "Git, Docker, Kubernetes, Terraform, AWS, GitHub Actions, VS Code"
   Libraries: "pandas, SQLAlchemy, Celery, Redis"
+  # add or remove categories as needed
