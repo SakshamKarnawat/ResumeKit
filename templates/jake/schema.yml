@@ -1,0 +1,208 @@
+# schema.yml — defines the form structure for the jake template
+# DO NOT EDIT — this file drives the web UI form
+# To modify resume fields, edit details.yml (CLI) or use the web form
+
+options:
+  - key: icons
+    label: "FontAwesome icons in links"
+    type: toggle
+    default: true
+
+  - key: font
+    label: "Font"
+    type: select
+    options:
+      - value: "charter"
+        label: "Charter (serif, recommended)"
+      - value: "times"
+        label: "Times New Roman"
+      - value: "default"
+        label: "Default (Computer Modern)"
+    default: "charter"
+
+  - key: color_links
+    label: "Colored links"
+    type: toggle
+    default: false
+
+sections:
+  - key: heading
+    label: "Personal Info"
+    type: single
+    fields:
+      - key: name
+        label: "Full Name"
+        type: text
+        required: true
+        placeholder: "Jake Ryan"
+
+      - key: phone
+        label: "Phone"
+        type: text
+        required: true
+        placeholder: "123-456-7890"
+
+      - key: email
+        label: "Email"
+        type: email
+        required: true
+        placeholder: "jake@example.com"
+
+      - key: linkedin
+        label: "LinkedIn"
+        type: text
+        required: true
+        placeholder: "linkedin.com/in/jakeryan"
+        hint: "no https://"
+
+      - key: github
+        label: "GitHub"
+        type: text
+        required: true
+        placeholder: "github.com/jakeryan"
+        hint: "no https://"
+
+      - key: website
+        label: "Website"
+        type: text
+        required: false
+        placeholder: "jakeryan.dev"
+        hint: "optional — no https://"
+
+      - key: title
+        label: "Title"
+        type: text
+        required: false
+        placeholder: "Senior Software Engineer"
+        hint: "optional — your current role"
+
+      - key: summary
+        label: "Summary"
+        type: textarea
+        required: false
+        placeholder: "5+ years building scalable backend systems..."
+        hint: "optional — 1-2 lines max"
+
+  - key: education
+    label: "Education"
+    type: list
+    min: 1
+    fields:
+      - key: institution
+        label: "Institution"
+        type: text
+        required: true
+        placeholder: "Southwestern University"
+
+      - key: location
+        label: "Location"
+        type: text
+        required: true
+        placeholder: "Georgetown, TX"
+
+      - key: degree
+        label: "Degree"
+        type: text
+        required: true
+        placeholder: "B.S. Computer Science"
+
+      - key: dates
+        label: "Dates"
+        type: text
+        required: true
+        placeholder: "Aug. 2015 -- May 2019"
+
+  - key: experience
+    label: "Experience"
+    type: list
+    min: 1
+    fields:
+      - key: title
+        label: "Job Title"
+        type: text
+        required: true
+        placeholder: "Software Engineer"
+
+      - key: company
+        label: "Company"
+        type: text
+        required: true
+        placeholder: "Acme Corp"
+
+      - key: location
+        label: "Location"
+        type: text
+        required: true
+        placeholder: "San Francisco, CA"
+
+      - key: dates
+        label: "Dates"
+        type: text
+        required: true
+        placeholder: "Jan. 2022 -- Present"
+
+      - key: bullets
+        label: "Bullet Points"
+        type: bullets
+        required: true
+        min: 1
+        placeholder: "Did X using Y resulting in Z impact"
+
+  - key: projects
+    label: "Projects"
+    type: list
+    required: false
+    hint: "optional — remove entire section to exclude from resume"
+    fields:
+      - key: name
+        label: "Project Name"
+        type: text
+        required: true
+        placeholder: "ResumeCraft"
+
+      - key: stack
+        label: "Tech Stack"
+        type: text
+        required: true
+        placeholder: "Python, React, PostgreSQL"
+
+      - key: dates
+        label: "Dates"
+        type: text
+        required: true
+        placeholder: "Jan. 2023 -- Present"
+
+      - key: demo
+        label: "Demo URL"
+        type: text
+        required: false
+        placeholder: "https://yourproject.com"
+        hint: "optional"
+
+      - key: repo
+        label: "Repo URL"
+        type: text
+        required: false
+        placeholder: "github.com/you/project"
+        hint: "optional — no https://"
+
+      - key: gif
+        label: "GIF/Demo URL"
+        type: text
+        required: false
+        placeholder: "https://imgur.com/demo.gif"
+        hint: "optional"
+
+      - key: bullets
+        label: "Bullet Points"
+        type: bullets
+        required: true
+        min: 1
+        placeholder: "Built X using Y"
+
+  - key: skills
+    label: "Technical Skills"
+    type: keyvalue
+    hint: "add or remove skill categories as needed"
+    placeholder_key: "Languages"
+    placeholder_value: "Python, Go, TypeScript, SQL"

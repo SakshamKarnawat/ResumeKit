@@ -11,7 +11,6 @@ Opens browser at http://localhost:7878
 import os
 import sys
 import json
-import time
 import threading
 import subprocess
 import http.server
@@ -28,8 +27,10 @@ UI_DIR = ROOT / "ui"
 GENERATED_DIR.mkdir(exist_ok=True)
 
 class Handler(http.server.SimpleHTTPRequestHandler):
+    _custom_details = None
+
     def log_message(self, format, *args):
-        pass  # suppress request logs
+        pass
 
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
@@ -40,6 +41,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         elif parsed.path == "/api/templates":
             templates = [d.name for d in TEMPLATES_DIR.iterdir() if d.is_dir()]
             self.json_response(templates)
+
+        elif parsed.path.startswith("/api/schema"):
+            template = urllib.parse.parse_qs(parsed.query).get("template", ["jake"])[0]
+            schema_path = TEMPLATES_DIR / template / "schema.yml"
+            if schema_path.exists():
+                self.serve_file(schema_path, "text/plain")
+            else:
+                self.send_error(404, "Schema not found")
 
         elif parsed.path.startswith("/api/details"):
             template = urllib.parse.parse_qs(parsed.query).get("template", ["jake"])[0]
@@ -58,7 +67,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         elif parsed.path == "/api/status":
             self.json_response({"status": "ok"})
-        
+
         else:
             self.send_error(404)
 
@@ -71,7 +80,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             body = self.rfile.read(length).decode("utf-8")
             details_path = TEMPLATES_DIR / template / "details.yml"
             details_path.write_text(body)
-            # blocking build — wait for result
             error, warning = self.run_build(template, Handler._custom_details)
             self.json_response({"ok": not error, "error": error, "warning": warning})
 
@@ -89,14 +97,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             cmd += ["--details", details_path]
         result = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
         if result.returncode == 2:
-            # built ok but overflow warning
-            return None, result.stderr + result.stdout  # (error, warning)
+            return None, result.stderr + result.stdout
         elif result.returncode != 0:
-            return result.stderr + result.stdout, None  # (error, warning)
+            return result.stderr + result.stdout, None
         return None, None
-
-    _last_error = None
-    _custom_details = None
 
     def serve_file(self, path, content_type):
         try:
