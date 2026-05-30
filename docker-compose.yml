@@ -1,0 +1,8 @@
+services:
+  yamlcv:
+    build: .
+    ports:
+      - "7878:7878"
+    volumes:
+      - ./generated:/app/generated
+      - ./templates:/app/templates

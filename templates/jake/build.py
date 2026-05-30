@@ -29,6 +29,13 @@ def escape(text):
         text = text.replace(char, replacement)
     return text
 
+def normalizeUrl(u):
+    if not u:
+        return ""
+    if u.startswith("http://") or u.startswith("https://"):
+        return u
+    return "https://" + u
+
 def build_heading(h, opts):
     icons = opts.get('icons', True)
 
@@ -38,14 +45,28 @@ def build_heading(h, opts):
     gh_icon      = r"\faGithub\ "     if icons else ""
     web_icon     = r"\faGlobe\ "      if icons else ""
 
-    links = rf"{phone_icon}\href{{tel:{h['phone']}}}{{\underline{{{escape(h['phone'])}}}}} $|$ {email_icon}\href{{mailto:{h['email']}}}{{\underline{{{escape(h['email'])}}}}} $|$ {li_icon}\href{{https://{h['linkedin']}}}{{\underline{{{escape(h['linkedin'])}}}}} $|$ {gh_icon}\href{{https://{h['github']}}}{{\underline{{{escape(h['github'])}}}}}"
+    phone = h.get('phone', '')
+    email = h.get('email', '')
+    linkedin = normalizeUrl(h.get('linkedin', ''))
+    github = normalizeUrl(h.get('github', ''))
+    website = normalizeUrl(h.get('website', ''))
 
-    if h.get('website'):
-        links += rf" $|$ {web_icon}\href{{https://{h['website']}}}{{\underline{{{escape(h['website'])}}}}}"
+    linkedin_label = linkedin.rstrip('/').split('/')[-1] if linkedin else ''
+    github_label   = github.rstrip('/').split('/')[-1] if github else ''
+
+    links = (
+        f"{phone_icon}\\href{{tel:{phone}}}{{\\underline{{{escape(phone)}}}}} $|$ "
+        f"{email_icon}\\href{{mailto:{email}}}{{\\underline{{{escape(email)}}}}} $|$ "
+        f"{li_icon}\\href{{{linkedin}}}{{\\underline{{{escape(linkedin_label)}}}}} $|$ "
+        f"{gh_icon}\\href{{{github}}}{{\\underline{{{escape(github_label)}}}}}"
+    )
+
+    if website:
+        links += rf" $|$ {web_icon}\href{{{website}}}{{\underline{{{escape(website)}}}}}"
 
     title_line = ""
     if h.get('title'):
-        title_line = rf"\\ \vspace{{2pt}}\small\textit{{{escape(h['title'])}}}"
+        title_line = rf"\\ \vspace{{2pt}}\large\textit{{{escape(h['title'])}}}"
 
     summary_line = ""
     if h.get('summary'):
@@ -151,6 +172,8 @@ def build_preamble(opts):
         font_pkg = r"\usepackage{charter}"
     elif font == "times":
         font_pkg = r"\usepackage{times}"
+    elif font == "lato":
+        font_pkg = r"\usepackage[default]{lato}"
     # default = computer modern, no package needed
 
     hyperref = r"\usepackage[hidelinks]{hyperref}" if not color_links else \
@@ -262,6 +285,9 @@ def main():
 
     opts = data.get('options', {})
 
+    uses_fontspec = opts.get('font', '') in ('inter', 'calibri', 'meslo')
+    latex_engine = "xelatex" if uses_fontspec else "pdflatex"
+
     tex = build_preamble(opts)
     tex += "\n\\begin{document}\n"
     tex += build_heading(data['heading'], opts)
@@ -282,7 +308,7 @@ def main():
     print(f"✓ {output_file} generated")
 
     result = subprocess.run(
-        ["latexmk", "-pdf", "-interaction=nonstopmode", output_file],
+        ["latexmk", f"-{latex_engine}", "-interaction=nonstopmode", output_file],
         cwd=output_dir,
         capture_output=True
     )

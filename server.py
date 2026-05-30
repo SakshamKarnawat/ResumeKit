@@ -132,11 +132,12 @@ if __name__ == "__main__":
     Handler._custom_details = args.details
 
     PORT = args.port
-    server = http.server.HTTPServer(("localhost", PORT), Handler)
+    server = http.server.HTTPServer(("0.0.0.0", PORT), Handler)
     print(f"→ yamlcv UI running at http://localhost:{PORT}")
     if args.details:
         print(f"→ using details: {args.details}")
     print("  Ctrl+C to stop")
+    # TODO: if using docker, then don't open!
     threading.Timer(1, lambda: webbrowser.open(f"http://localhost:{PORT}")).start()
     try:
         server.serve_forever()

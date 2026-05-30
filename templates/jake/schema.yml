@@ -15,7 +15,9 @@ options:
       - value: "charter"
         label: "Charter (serif, recommended)"
       - value: "times"
-        label: "Times New Roman"
+        label: "Times New Roman (serif)"
+      - value: "lato"
+        label: "Lato (sans-serif)"
       - value: "default"
         label: "Default (Computer Modern)"
     default: "charter"
@@ -53,21 +55,18 @@ sections:
         type: text
         required: true
         placeholder: "linkedin.com/in/jakeryan"
-        hint: "no https://"
 
       - key: github
         label: "GitHub"
         type: text
         required: true
         placeholder: "github.com/jakeryan"
-        hint: "no https://"
 
       - key: website
         label: "Website"
         type: text
         required: false
         placeholder: "jakeryan.dev"
-        hint: "optional — no https://"
 
       - key: title
         label: "Title"
